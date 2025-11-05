@@ -1,6 +1,9 @@
 mkdir build
 cd build
 
+:: Ensure that M_PI is defined
+set "CXXFLAGS=%CXXFLAGS% /D_USE_MATH_DEFINES"
+
 cmake %CMAKE_ARGS% -G "Ninja" ^
     -DBUILD_TESTING:BOOL=ON ^
     -DPYTHON_EXECUTABLE=%PYTHON% ^
