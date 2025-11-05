@@ -22,9 +22,6 @@ source:
 
 build:
   number: ${{ build_number }}
-  # Once https://github.com/conda-forge/eiquadprog-feedstock/pull/15
-  # Windows support will be enabled
-  skip: win
 
 outputs:
   - package:
@@ -52,7 +49,7 @@ outputs:
         - pip
         - setuptools
         - doxystub
-        - pinocchio
+        - libpinocchio
         - numpy
         - eigenpy
         - eiquadprog
@@ -60,6 +57,7 @@ outputs:
       run:
         - python
         - meshcat-python
+        - pinocchio
       run_exports:
         - ${{ pin_subpackage('placo', upper_bound='x.x.x') }}
 
