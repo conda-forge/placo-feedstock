@@ -50,6 +50,7 @@ outputs:
         - setuptools
         - doxystub
         - libpinocchio
+        - pinocchio-python
         - numpy
         - eigenpy
         - eiquadprog
@@ -57,7 +58,7 @@ outputs:
       run:
         - python
         - meshcat-python
-        - pinocchio
+        - pinocchio-python
       run_exports:
         - ${{ pin_subpackage('placo', upper_bound='x.x.x') }}
 
