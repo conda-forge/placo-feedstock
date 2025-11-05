@@ -45,6 +45,10 @@ outputs:
         - cmake
         - pkg-config
         - ninja
+        # To avoid operator overloading confusion on Windows we use clang-cl
+        - if: win
+          then:
+            - clang
       host:
         - python
         - pip
