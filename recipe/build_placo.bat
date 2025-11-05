@@ -4,6 +4,10 @@ cd build
 :: Ensure that M_PI is defined
 set "CXXFLAGS=%CXXFLAGS% /D_USE_MATH_DEFINES"
 
+:: Use clang-cl to avoid operator overloading confusion
+set "CC=clang-cl"
+set "CXX=clang-cl"
+
 cmake %CMAKE_ARGS% -G "Ninja" ^
     -DCMAKE_WINDOWS_EXPORT_ALL_SYMBOLS:BOOL=ON ^
     -DBUILD_TESTING:BOOL=ON ^
