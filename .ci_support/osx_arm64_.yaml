@@ -20,10 +20,6 @@ cxx_compiler_version:
 - '19'
 jsoncpp:
 - 1.9.6
-libboost_devel:
-- '1.86'
-libboost_python_devel:
-- '1.86'
 macos_machine:
 - arm64-apple-darwin20.0.0
 numpy:
