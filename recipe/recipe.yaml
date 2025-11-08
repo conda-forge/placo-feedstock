@@ -11,6 +11,8 @@ recipe:
 source:
   - url: https://github.com/Rhoban/placo/archive/refs/tags/v${{ version }}.tar.gz
     sha256: 4125a7b3e4271c9d5c25e51911b315cf6fca451cbd31096496589c80be668f4c
+    patches:
+      - external_placo_pyi_cross_compilation.patch
 
   # In general conda-forge recipes only use tarballs. However, placo explicitly excluedes its
   # tests from the tarball using export-ignore in .gitattributes, see 
