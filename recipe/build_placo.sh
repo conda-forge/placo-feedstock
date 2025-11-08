@@ -9,6 +9,8 @@ CMAKE_ARGS="${CMAKE_ARGS} -DPython3_EXECUTABLE:PATH=${PYTHON}"
 CMAKE_ARGS="${CMAKE_ARGS} -DPython3_INCLUDE_DIR:PATH=${Python_INCLUDE_DIR}"
 CMAKE_ARGS="${CMAKE_ARGS} -DPython3_NumPy_INCLUDE_DIR=${Python_NumPy_INCLUDE_DIR}"
 
+SITEPKG_REL="$(python -c 'import sysconfig,sys,os; print(os.path.relpath(sysconfig.get_paths()["purelib"], sys.prefix))')"
+
 # The generation process of .pyi files using doxystub is inheritly incompatible with cross-compilation,
 # as it uses to run the Python interpreter and load the module itself. However the generated .pyi
 # file is cross-platform, so during cross-compilation we actually build the host placo, and we use that
@@ -39,7 +41,7 @@ if [[ "$CONDA_BUILD_CROSS_COMPILATION" == 1 ]]; then
       -DBUILD_TESTING:BOOL=OFF
     cmake --build . --parallel ${CPU_COUNT} --config Release
 
-    CMAKE_ARGS="${CMAKE_ARGS} -DPLACO_PY_TO_INSTALL=$(pwd)/lib/placo.pyi"
+    export CMAKE_ARGS="${CMAKE_ARGS} -DPLACO_PY_TO_INSTALL=$(pwd)/${SITEPKG_REL}/placo.pyi"
 
     export CC=$CC_BACKUP
     export CXX=$CXX_BACKUP
