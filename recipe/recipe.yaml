@@ -1,7 +1,7 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/prefix-dev/recipe-format/main/schema.json
 
 context:
-  version: "0.9.15"
+  version: "0.9.16"
   build_number: 0
 
 recipe:
@@ -10,7 +10,7 @@ recipe:
 
 source:
   - url: https://github.com/Rhoban/placo/archive/refs/tags/v${{ version }}.tar.gz
-    sha256: 5a4a2e6b4bc0938157795c6c25d5df9a89a1fa14fd7d87c5158ded89d13e190b
+    sha256: 4125a7b3e4271c9d5c25e51911b315cf6fca451cbd31096496589c80be668f4c
 
   # In general conda-forge recipes only use tarballs. However, placo explicitly excluedes its
   # tests from the tarball using export-ignore in .gitattributes, see 
