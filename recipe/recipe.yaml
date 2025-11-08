@@ -41,9 +41,16 @@ outputs:
             - python
             - cross-python_${{ target_platform }}
             - numpy
-        - ${{ compiler('cxx') }}
-        - ${{ compiler('c') }}
-        - ${{ stdlib("c") }}
+            - setuptools
+            - doxystub
+            - libpinocchio
+            - pinocchio-python
+            - eigenpy
+            - eiquadprog
+            - jsoncpp
+            - python
+            - meshcat-python
+            - pinocchio-python
         - cmake
         - pkg-config
         - ninja
