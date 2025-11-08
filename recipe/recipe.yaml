@@ -53,6 +53,9 @@ outputs:
             - python
             - meshcat-python
             - pinocchio-python
+        - ${{ compiler('cxx') }}
+        - ${{ compiler('c') }}
+        - ${{ stdlib("c") }}
         - cmake
         - pkg-config
         - ninja
