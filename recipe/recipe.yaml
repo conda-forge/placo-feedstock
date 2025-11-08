@@ -43,6 +43,7 @@ outputs:
             - numpy
             - setuptools
             - doxystub
+            - libboost-python-devel
             - libpinocchio
             - pinocchio-python
             - eigenpy
@@ -63,6 +64,7 @@ outputs:
         - pip
         - setuptools
         - doxystub
+        - libboost-python-devel
         - libpinocchio
         - pinocchio-python
         - numpy
