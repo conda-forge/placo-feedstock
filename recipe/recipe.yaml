@@ -1,7 +1,7 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/prefix-dev/recipe-format/main/schema.json
 
 context:
-  version: "0.9.14"
+  version: "0.9.17"
   build_number: 0
 
 recipe:
@@ -10,7 +10,7 @@ recipe:
 
 source:
   - url: https://github.com/Rhoban/placo/archive/refs/tags/v${{ version }}.tar.gz
-    sha256: a7f866063d564d3d50605e74b8097aeac7125e219970b9903ad72bd81e36401d
+    sha256: e1224385e9ee1dae74f4488b37033729d7be447b6f13a468558956ec9a3b5e06
 
   # In general conda-forge recipes only use tarballs. However, placo explicitly excluedes its
   # tests from the tarball using export-ignore in .gitattributes, see 
@@ -24,7 +24,7 @@ build:
   number: ${{ build_number }}
   # Once https://github.com/conda-forge/eiquadprog-feedstock/pull/15
   # Windows support will be enabled
-  skip: win 
+  skip: win
 
 outputs:
   - package:
@@ -92,7 +92,7 @@ about:
   license: MIT
   license_file:
     - LICENSE
-  summary:  Rhoban Planning and Control.
+  summary: Rhoban Planning and Control.
 
 extra:
   recipe-maintainers:
