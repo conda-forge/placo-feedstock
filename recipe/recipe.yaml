@@ -13,6 +13,7 @@ source:
     sha256: e1224385e9ee1dae74f4488b37033729d7be447b6f13a468558956ec9a3b5e06
     patches:
       - external_placo_pyi_cross_compilation.patch
+      - fix_placo_python_module_win_extension.patch
 
   # In general conda-forge recipes only use tarballs. However, placo explicitly excluedes its
   # tests from the tarball using export-ignore in .gitattributes, see 
