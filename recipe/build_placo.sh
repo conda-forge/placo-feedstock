@@ -41,13 +41,15 @@ if [[ "$CONDA_BUILD_CROSS_COMPILATION" == 1 ]]; then
       -DBUILD_TESTING:BOOL=OFF
     cmake --build . --parallel ${CPU_COUNT} --config Release
 
-    export CMAKE_ARGS="${CMAKE_ARGS} -DPLACO_PY_TO_INSTALL=$(pwd)/${SITEPKG_REL}/placo.pyi"
-
     export CC=$CC_BACKUP
     export CXX=$CXX_BACKUP
     export LDFLAGS=$LDFLAGS_BACKUP
     export PKG_CONFIG_PATH=$PKG_CONFIG_PATH_BACKUP
   )
+fi
+
+if [[ "$CONDA_BUILD_CROSS_COMPILATION" == 1 ]]; then
+  export CMAKE_ARGS="${CMAKE_ARGS} -DPLACO_PY_TO_INSTALL=$(pwd)/build_cxx_host/${SITEPKG_REL}/placo.pyi"
 fi
 
 rm -rf build
@@ -56,7 +58,6 @@ mkdir -p build
 cd build
 
 cmake ${CMAKE_ARGS} -GNinja -DPYTHON_EXECUTABLE=$PYTHON .. -DBUILD_TESTING:BOOL=ON
-cat CMakeCache.txt
 
 cmake --build . --config Release
 cmake --build . --config Release --target install
