@@ -5,8 +5,8 @@ cd build
 set "CXXFLAGS=%CXXFLAGS% /D_USE_MATH_DEFINES"
 
 :: Use clang-cl to avoid operator overloading confusion
-set "CC=clang-cl"
-set "CXX=clang-cl"
+set "CC=%BUILD_PREFIX%/Library/bin/clang-cl.exe"
+set "CXX=%BUILD_PREFIX%/Library/bin/clang-cl.exe"
 
 cmake %CMAKE_ARGS% -G "Ninja" ^
     -DCMAKE_WINDOWS_EXPORT_ALL_SYMBOLS:BOOL=ON ^
@@ -17,8 +17,19 @@ if errorlevel 1 exit 1
 
 type CMakeCache.txt
 
-:: Build.
-cmake --build . --config Release
+:: As the .pyi generation uses doxystub that loads the placo module, the libplaco.dll
+:: must be loadable by python. However, we can't simply add the build directory to PATH
+:: as Python ignores the PATH, and we can even modify the doxystub command to call
+:: os.add_dll_directory()
+:: As a workaround, we first build libplaco.dll and we manually copy it to %LIBRARY_BIN%
+cmake --build . --config Release --target libplaco
+if errorlevel 1 exit 1
+
+copy .\libplaco.dll "%LIBRARY_BIN%"
+if errorlevel 1 exit 1
+
+:: Build all targets, including Python bindings and .pyi files
+cmake --build . --config Release --parallel 2
 if errorlevel 1 exit 1
 
 :: Install.
