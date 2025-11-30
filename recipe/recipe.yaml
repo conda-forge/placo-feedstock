@@ -14,6 +14,7 @@ source:
     patches:
       - external_placo_pyi_cross_compilation.patch
       - fix_placo_python_module_win_extension.patch
+      - fix_install_on_windows.patch
 
   # In general conda-forge recipes only use tarballs. However, placo explicitly excluedes its
   # tests from the tarball using export-ignore in .gitattributes, see 
