@@ -1,7 +1,7 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/prefix-dev/recipe-format/main/schema.json
 
 context:
-  version: "0.9.14"
+  version: "0.9.17"
   build_number: 0
 
 recipe:
@@ -10,7 +10,11 @@ recipe:
 
 source:
   - url: https://github.com/Rhoban/placo/archive/refs/tags/v${{ version }}.tar.gz
-    sha256: a7f866063d564d3d50605e74b8097aeac7125e219970b9903ad72bd81e36401d
+    sha256: e1224385e9ee1dae74f4488b37033729d7be447b6f13a468558956ec9a3b5e06
+    patches:
+      - external_placo_pyi_cross_compilation.patch
+      - fix_placo_python_module_win_extension.patch
+      - fix_install_on_windows.patch
 
   # In general conda-forge recipes only use tarballs. However, placo explicitly excluedes its
   # tests from the tarball using export-ignore in .gitattributes, see 
@@ -22,9 +26,6 @@ source:
 
 build:
   number: ${{ build_number }}
-  # Once https://github.com/conda-forge/eiquadprog-feedstock/pull/15
-  # Windows support will be enabled
-  skip: win 
 
 outputs:
   - package:
@@ -41,18 +42,34 @@ outputs:
           then:
             - python
             - cross-python_${{ target_platform }}
+            - numpy
+            - setuptools
+            - doxystub
+            - libpinocchio
+            - pinocchio-python
+            - eigenpy
+            - eiquadprog
+            - jsoncpp
+            - python
+            - meshcat-python
+            - pinocchio-python
         - ${{ compiler('cxx') }}
         - ${{ compiler('c') }}
         - ${{ stdlib("c") }}
         - cmake
         - pkg-config
         - ninja
+        # To avoid operator overloading confusion on Windows we use clang-cl
+        - if: win
+          then:
+            - clang
       host:
         - python
         - pip
         - setuptools
         - doxystub
-        - pinocchio
+        - libpinocchio
+        - pinocchio-python
         - numpy
         - eigenpy
         - eiquadprog
@@ -60,6 +77,7 @@ outputs:
       run:
         - python
         - meshcat-python
+        - pinocchio-python
       run_exports:
         - ${{ pin_subpackage('placo', upper_bound='x.x.x') }}
 
@@ -92,7 +110,7 @@ about:
   license: MIT
   license_file:
     - LICENSE
-  summary:  Rhoban Planning and Control.
+  summary: Rhoban Planning and Control.
 
 extra:
   recipe-maintainers:
