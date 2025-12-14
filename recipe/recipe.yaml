@@ -1,7 +1,7 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/prefix-dev/recipe-format/main/schema.json
 
 context:
-  version: "0.9.17"
+  version: "0.9.18"
   build_number: 0
 
 recipe:
@@ -10,7 +10,7 @@ recipe:
 
 source:
   - url: https://github.com/Rhoban/placo/archive/refs/tags/v${{ version }}.tar.gz
-    sha256: e1224385e9ee1dae74f4488b37033729d7be447b6f13a468558956ec9a3b5e06
+    sha256: 765021c4400bc9819426fdebeceb29f74d4542f2fe3cfa916c89abfeee3cdc18
     patches:
       - external_placo_pyi_cross_compilation.patch
       - fix_placo_python_module_win_extension.patch
