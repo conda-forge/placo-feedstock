@@ -46,6 +46,7 @@ outputs:
             - setuptools
             - doxystub
             - libpinocchio
+            - eigen-abi-devel
             - pinocchio-python
             - eigenpy
             - eiquadprog
@@ -69,6 +70,7 @@ outputs:
         - setuptools
         - doxystub
         - libpinocchio
+        - eigen-abi-devel
         - pinocchio-python
         - numpy
         - eigenpy
