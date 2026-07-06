@@ -21,7 +21,7 @@ cxx_compiler_version:
 eigen_abi_devel:
 - 5.0.1
 jsoncpp:
-- 1.9.6
+- 1.9.7
 macos_machine:
 - arm64-apple-darwin20.0.0
 numpy:
