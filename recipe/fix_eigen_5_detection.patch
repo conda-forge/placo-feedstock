@@ -30,7 +30,7 @@ index 7f9888fb..595be254 100644
  #include "placo/kinematics/wheel_task.h"
  #include "placo/kinematics/kinematics_solver.h"
  
-+if defined(EIGEN_VERSION_AT_LEAST) && EIGEN_VERSION_AT_LEAST(5, 0, 0)
++#if defined(EIGEN_VERSION_AT_LEAST) && EIGEN_VERSION_AT_LEAST(5, 0, 0)
 +#define PLACO_KINEMATICS_WHEEL_TASK_ALL Eigen::placeholders::all
 +#else
 +#define PLACO_KINEMATICS_WHEEL_TASK_ALL Eigen::all
@@ -59,7 +59,7 @@ index 96e8d5a8..bc42ed89 100644
  #include <stdexcept>
  
 +
-+if defined(EIGEN_VERSION_AT_LEAST) && EIGEN_VERSION_AT_LEAST(5, 0, 0)
++#if defined(EIGEN_VERSION_AT_LEAST) && EIGEN_VERSION_AT_LEAST(5, 0, 0)
 +#define PLACO_TOOLS_AXISES_MASK_ALL Eigen::placeholders::all
 +#else
 +#define PLACO_TOOLS_AXISES_MASK_ALL Eigen::all
