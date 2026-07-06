@@ -1,63 +1,24 @@
 From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: Silvio Traversaro <silvio@traversaro.it>
-Date: Mon, 6 Jul 2026 17:10:00 +0200
-Subject: [PATCH] Fix support for newer Pinocchio frame parent joint API
+Date: Mon, 6 Jul 2026 17:40:00 +0200
+Subject: [PATCH] Fix build with newer Pinocchio FrameTpl API
 
-Pinocchio 2 exposed the parent joint of a frame as FrameTpl::parent.
-Newer Pinocchio exposes it as FrameTpl::parentJoint. Detect the available
-member at compile time so placo can build with both APIs.
+Newer Pinocchio exposes the parent joint of a frame as parentJoint
+instead of parent.
 ---
- src/placo/model/robot_wrapper.cpp | 27 ++++++++++++++++++++++++++-
- 1 file changed, 26 insertions(+), 1 deletion(-)
+ src/placo/model/robot_wrapper.cpp | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/src/placo/model/robot_wrapper.cpp b/src/placo/model/robot_wrapper.cpp
-index 993a5be0..00000000 100644
+index 993a5be0..9a2ec2b2 100644
 --- a/src/placo/model/robot_wrapper.cpp
 +++ b/src/placo/model/robot_wrapper.cpp
-@@ -16,10 +16,35 @@
- #include <json/json.h>
- #include <filesystem>
- #include <algorithm>
-+#include <type_traits>
-+#include <utility>
- 
- namespace fs = boost::filesystem;
- 
-+namespace
-+{
-+template <typename Frame, typename = void>
-+struct PlacoFrameHasParentJoint : std::false_type
-+{
-+};
-+
-+template <typename Frame>
-+struct PlacoFrameHasParentJoint<Frame, std::void_t<decltype(std::declval<const Frame&>().parentJoint)>> : std::true_type
-+{
-+};
-+
-+template <typename Frame>
-+pinocchio::JointIndex placo_frame_parent_joint(const Frame& frame)
-+{
-+  if constexpr (PlacoFrameHasParentJoint<Frame>::value)
-+  {
-+    return frame.parentJoint;
-+  }
-+  else
-+  {
-+    return frame.parent;
-+  }
-+}
-+}  // namespace
-+
- namespace placo::model
- {
- RobotWrapper::RobotWrapper(std::string model_directory, int flags, std::string urdf_content)
-@@ -323,7 +348,7 @@ void RobotWrapper::compute_hessians()
+@@ -323,7 +323,7 @@ void RobotWrapper::compute_hessians()
  Eigen::MatrixXd RobotWrapper::get_frame_hessian(FrameIndex frame, int joint_v_index)
  {
    // Frame parent joint index
 -  pinocchio::JointIndex joint_id = model.frames[frame].parent;
-+  pinocchio::JointIndex joint_id = placo_frame_parent_joint(model.frames[frame]);
++  pinocchio::JointIndex joint_id = model.frames[frame].parentJoint;
    pinocchio::SE3 T = model.frames[frame].placement;
  
    pinocchio::Tensor<double, 3, 0> H = pinocchio::getJointKinematicHessian(model, *data, joint_id, pinocchio::LOCAL);
