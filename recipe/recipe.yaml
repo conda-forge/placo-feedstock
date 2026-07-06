@@ -16,6 +16,7 @@ source:
       - fix_placo_python_module_win_extension.patch
       - fix_install_on_windows.patch
       - fix_eigen_5_detection.patch
+      - fix_pinocchio_frame_parent_joint.patch
 
   # In general conda-forge recipes only use tarballs. However, placo explicitly excluedes its
   # tests from the tarball using export-ignore in .gitattributes, see 
