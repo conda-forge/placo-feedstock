@@ -84,7 +84,6 @@ outputs:
         - urdfdom
         - if: linux
           then: libgomp
-          else: llvm-openmp
       run:
         - python
         - meshcat-python
