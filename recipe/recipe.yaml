@@ -78,6 +78,13 @@ outputs:
         - eigenpy
         - eiquadprog
         - jsoncpp
+        - libboost-devel
+        - libboost-python-devel
+        - libcoal
+        - urdfdom
+        - if: linux
+          then: libgomp
+          else: llvm-openmp
       run:
         - python
         - meshcat-python
