@@ -1,0 +1,79 @@
+From 17e35a69d1d7702e55c02fcc8a9394fad6648f0a Mon Sep 17 00:00:00 2001
+From: Silvio Traversaro <silvio@traversaro.it>
+Date: Mon, 6 Jul 2026 16:53:57 +0200
+Subject: [PATCH] Fix support for Eigen 5 while keep compatibility with Eigen 3
+
+---
+ CMakeLists.txt                      |  2 +-
+ src/placo/kinematics/wheel_task.cpp | 10 ++++++++--
+ src/placo/tools/axises_mask.cpp     |  9 ++++++++-
+ 3 files changed, 17 insertions(+), 4 deletions(-)
+
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index 2b6c8884..b03d8b49 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -25,7 +25,7 @@ set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_INSTALL_L
+ endif()
+ 
+ 
+-find_package (Eigen3 3 REQUIRED NO_MODULE)
++find_package (Eigen3 REQUIRED NO_MODULE)
+ 
+ add_library(libplaco SHARED
+     # Wrappers
+diff --git a/src/placo/kinematics/wheel_task.cpp b/src/placo/kinematics/wheel_task.cpp
+index 7f9888fb..595be254 100644
+--- a/src/placo/kinematics/wheel_task.cpp
++++ b/src/placo/kinematics/wheel_task.cpp
+@@ -1,6 +1,12 @@
+ #include "placo/kinematics/wheel_task.h"
+ #include "placo/kinematics/kinematics_solver.h"
+ 
++#if defined(EIGEN_VERSION_AT_LEAST) && EIGEN_VERSION_AT_LEAST(5, 0, 0)
++#define PLACO_KINEMATICS_WHEEL_TASK_ALL Eigen::placeholders::all
++#else
++#define PLACO_KINEMATICS_WHEEL_TASK_ALL Eigen::all
++#endif
++
+ namespace placo::kinematics
+ {
+ WheelTask::WheelTask(std::string joint, double radius, bool omniwheel)
+@@ -39,8 +45,8 @@ void WheelTask::update()
+   // With an omniwheel, we remove the lateral sliding constraint (along contact y axis)
+   if (omniwheel)
+   {
+-    Eigen::MatrixXd new_A = A({ 0, 2 }, Eigen::all);
+-    Eigen::MatrixXd new_b = b({ 0, 2 }, Eigen::all);
++    Eigen::MatrixXd new_A = A({ 0, 2 }, PLACO_KINEMATICS_WHEEL_TASK_ALL);
++    Eigen::MatrixXd new_b = b({ 0, 2 }, PLACO_KINEMATICS_WHEEL_TASK_ALL);
+     A = new_A;
+     b = new_b;
+   }
+diff --git a/src/placo/tools/axises_mask.cpp b/src/placo/tools/axises_mask.cpp
+index 96e8d5a8..bc42ed89 100644
+--- a/src/placo/tools/axises_mask.cpp
++++ b/src/placo/tools/axises_mask.cpp
+@@ -1,6 +1,13 @@
+ #include "placo/tools/axises_mask.h"
+ #include <stdexcept>
+ 
++
++#if defined(EIGEN_VERSION_AT_LEAST) && EIGEN_VERSION_AT_LEAST(5, 0, 0)
++#define PLACO_TOOLS_AXISES_MASK_ALL Eigen::placeholders::all
++#else
++#define PLACO_TOOLS_AXISES_MASK_ALL Eigen::all
++#endif
++
+ namespace placo::tools
+ {
+ AxisesMask::AxisesMask()
+@@ -76,6 +83,6 @@ Eigen::MatrixXd AxisesMask::apply(Eigen::MatrixXd M)
+     M_masked = M;
+   }
+ 
+-  return M_masked(indices, Eigen::all);
++  return M_masked(indices, PLACO_TOOLS_AXISES_MASK_ALL);
+ }
+ }  // namespace placo::tools
+\ No newline at end of file
